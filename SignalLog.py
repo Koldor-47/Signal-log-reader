@@ -56,9 +56,9 @@ class SignalLog:
     def Get_sensor_block_data(self):
         data = []
         block = []
-        lines_of_one_block = 13
+        lines_of_one_block = 18
 
-        for line in re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.[0-9]+", self._readData):
+        for line in re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.*[0-9]*", self._readData):
             block.append(line)
             sub_block_id = line.split(" ")[1]
             if int(sub_block_id) >= lines_of_one_block:
@@ -94,7 +94,7 @@ class SignalLog:
             
             allData.append(data_blob)
         
-        return pd.DataFrame(allData)
+        return allData
                 
 
 

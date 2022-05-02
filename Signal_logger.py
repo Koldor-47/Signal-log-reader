@@ -5,7 +5,7 @@ import pandas as pd
 import sensor
 import SignalLog
 
-test = SignalLog.SignalLog(r"Data\220502_150544.SIL")
+test = SignalLog.SignalLog(r"Data\220428_104205.SIL")
 
 
 #df = pd.DataFrame(test._sensorNames[12]._data)
@@ -37,10 +37,12 @@ sensor_data_test = test.Get_sensor_block_data()
 #print(sensor_data_test)
 testData_5 = test. All_Sensor_dataFrame(sensor_data_test)
 
-print(test.listSensors())
+#print(test.listSensors())
 
-print(testData_5)
+df5 = pd.DataFrame(testData_5)
 
+print(df5)
 #plt.plot(testData_5["HNS_RIG_HEAD_LOCAL_DEG"])
 #plt.xticks(rotation=45)
 #plt.show()
+#print(df5.loc[df5["ADPE_CURRENT_TASK"] == "1"])
