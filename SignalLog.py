@@ -53,49 +53,48 @@ class SignalLog:
                 df.to_csv(f"{sensorsName}.csv")
 
           
-    def all_sensors_toCsv(self):
-        df = pd.DataFrame(self._sensorNames[0]._data)
-        df.rename(columns={"Value" : self._sensorNames[0].name}, inplace=True)
-        for sen in range(1, len(self._sensorNames)):
-            temp_df = pd.DataFrame(self._sensorNames[sen]._data)
-            temp_df.rename(columns={"Value" : self._sensorNames[sen].name}, inplace=True)
-            df = pd.merge(df, temp_df, how="left", on=["time"])
-        
-        print(df)
-
-
-    def test_fun2(self):
+    def Get_sensor_block_data(self):
         data = []
         block = []
-        lines_of_one_block = 16
-        line_count = 0
+        lines_of_one_block = 13
+
         for line in re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.[0-9]+", self._readData):
             block.append(line)
-            line_count += 1
-            if line_count >= lines_of_one_block:
+            sub_block_id = line.split(" ")[1]
+            if int(sub_block_id) >= lines_of_one_block:
                 data.append(block)
                 block = []
-                line_count = 0
+
         
         return data
     
-    def test_fun2b(self, bigBlob):
+    def All_Sensor_dataFrame(self, bigBlob):
+        # trying to make a dict of each row Then add each row to a list then add to pandas as a DataFrame
+        #
+        # {Time : time of first event in group of sensors, Each sensor Name: [list of sensor values update each iteration of  the first loop]}
+        #
+        # Returns a Pandas Dataframe of all the sensors
+        #
         allData = []
+
+        # Return a dict of ID => Sensors Names
         sensor_name_data = self.make_sensor_dict()
 
+        # Each Blob should each sensor Once
         for num, blob in enumerate(bigBlob):
-            data_blob = {}
-            theNum = str(num)
-            s_name = sensor_name_data[blob[theNum.zfill(2)].split(" ")[1]]
-            data_blob["time"] = blob[num].split(" ")[0]
-            data_blob[s_name] = []
+            data_blob = {}     
+            data_blob["time"] = blob[0].split(" ")[0]
+
             for d in blob:
-                d = d.split(" ")
-                data_blob[s_name].append(d[2])
+                split_d = d.split(" ")
+                sensor_id = split_d[1]
+                sensorName = sensor_name_data[sensor_id]
+                data_blob[sensorName] = split_d[2]
+
             
             allData.append(data_blob)
         
-        print(allData[0])
+        return pd.DataFrame(allData)
                 
 
 

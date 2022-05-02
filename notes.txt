@@ -1,0 +1,13 @@
+
+06 ADPE_STATUS 
+    1 = 
+    2 =
+    3 =
+    4 = 
+
+
+07 ADPE_CURRENT_TASK
+    1 = 
+    2 = Rasing Feeder
+    3 = 
+    4 = Task complete
