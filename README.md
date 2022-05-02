@@ -1,2 +1,4 @@
 # Signal-log-reader
-For reading signal Logs
+
+This is made to interpret a SIGLOGGER file. 
+
