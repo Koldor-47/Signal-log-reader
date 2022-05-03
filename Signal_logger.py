@@ -1,11 +1,12 @@
 from logging.handlers import RotatingFileHandler
 import matplotlib.pyplot as plt
 import pandas as pd
+import openpyxl
 
 import sensor
 import SignalLog
 
-test = SignalLog.SignalLog(r"Data\220428_104205.SIL")
+test = SignalLog.SignalLog(r"Data\220502_150544.SIL")
 
 
 #df = pd.DataFrame(test._sensorNames[12]._data)
@@ -41,8 +42,10 @@ testData_5 = test. All_Sensor_dataFrame(sensor_data_test)
 
 df5 = pd.DataFrame(testData_5)
 
-print(df5)
+#print(df5.dtypes)
+#df5.to_excel("test.xlsx")
+#print(df5)
 #plt.plot(testData_5["HNS_RIG_HEAD_LOCAL_DEG"])
 #plt.xticks(rotation=45)
 #plt.show()
-#print(df5.loc[df5["ADPE_CURRENT_TASK"] == "1"])
+print(df5.loc[df5["ADPE_STATUS"].notnull()])

@@ -1,6 +1,7 @@
 import re
 import sensor as sn
 import pandas as pd
+from datetime import datetime as dt
 
 
 class SignalLog:
@@ -56,7 +57,7 @@ class SignalLog:
     def Get_sensor_block_data(self):
         data = []
         block = []
-        lines_of_one_block = 18
+        lines_of_one_block = 13
 
         for line in re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.*[0-9]*", self._readData):
             block.append(line)
@@ -82,8 +83,9 @@ class SignalLog:
 
         # Each Blob should each sensor Once
         for num, blob in enumerate(bigBlob):
-            data_blob = {}     
-            data_blob["time"] = blob[0].split(" ")[0]
+            data_blob = {}
+            thetime = dt.strptime(blob[0].split(" ")[0], "%H%M%S.%f")     
+            data_blob["time"] = thetime
 
             for d in blob:
                 split_d = d.split(" ")
