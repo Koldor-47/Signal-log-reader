@@ -2,30 +2,39 @@ import re
 import sensor as sn
 import pandas as pd
 from datetime import datetime as dt
+import siglogConfig
 
 
 class SignalLog:
     _file_name =""
+    _cfg_path_name = ""
     _dataRows = 0
     _sensorNames = []
-    _readData = ""
+    _read_log_Data = ""
+    _read_cfg_data = ""
 
-    def __init__(self, filePath):
+
+    def __init__(self, filePath, cfgFilePath):
         self._file_name = filePath
-        self.read_signal_log()
+        self._cfg_path_name = cfgFilePath
+        self._read_log_Data = self.read_raw_data(self._file_name)
+        self._read_cfg_data = self.read_raw_data(self._cfg_path_name)
         self.find_sensor_names()
     
-    def read_signal_log(self):
-        with open(self._file_name, 'r') as SigData:
-            self._readData = SigData.read()
+
+    def read_raw_data(self, fileToRead):
+        readFile = ""
+        with open(fileToRead, 'r') as SigData:
+            readFile = SigData.read()
+        return readFile
 
     def find_sensor_names(self):
         sensors = []
-        if re.findall(r"[0-9]{2} [A-Z_]*\n", self._readData):
-            for sensor in re.findall("[0-9]{2} [A-Z_]*\n", self._readData):
+        if re.findall(r"[0-9]{2} [A-Z_]*\n", self._read_log_Data):
+            for sensor in re.findall("[0-9]{2} [A-Z_]*\n", self._read_log_Data):
                 sensor = sensor.split(" ")
                 searchDataString = "[0-9]+.[0-9]+ " + sensor[0] + " -?[0-9]+.[0-9]+"
-                rawData = re.findall(searchDataString, self._readData)
+                rawData = re.findall(searchDataString, self._read_log_Data)
                 sensor_dict = sn.Sensor(sensor[1].strip(), sensor[0], rawData)
                 sensor_dict.sortData()
                 sensors.append(sensor_dict)
@@ -59,7 +68,7 @@ class SignalLog:
         block = []
         lines_of_one_block = 13
 
-        for line in re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.*[0-9]*", self._readData):
+        for line in re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.*[0-9]*", self._read_log_Data):
             block.append(line)
             sub_block_id = line.split(" ")[1]
             if int(sub_block_id) >= lines_of_one_block:
