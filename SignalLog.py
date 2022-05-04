@@ -10,6 +10,7 @@ class SignalLog:
     _cfg_path_name = ""
     _dataRows = 0
     _sensorNames = []
+    _cfg_sensorNames = []
     _read_log_Data = ""
     _read_cfg_data = ""
 
@@ -20,6 +21,7 @@ class SignalLog:
         self._read_log_Data = self.read_raw_data(self._file_name)
         self._read_cfg_data = self.read_raw_data(self._cfg_path_name)
         self.find_sensor_names()
+        self.find_sensor_names_cfgfile()
     
 
     def read_raw_data(self, fileToRead):
@@ -40,6 +42,18 @@ class SignalLog:
                 sensors.append(sensor_dict)
         
         self._sensorNames = sensors
+
+    def find_sensor_names_cfgfile(self):
+        self.cfg_sensors = []
+        self._read_cfg_data_noComment = ""
+        for self.line in self._read_cfg_data.split("\n"):
+            if len(self.line) > 1:
+                if self.line[0] != '#':
+                    self._read_cfg_data_noComment += self.line + "\n"
+        
+        self._cfg_sensorNames = self._read_cfg_data_noComment.split("\n")[1:-2]
+        self._read_cfg_data = self._read_cfg_data_noComment
+        print(self._cfg_sensorNames)
 
     def listSensors(self):
         for sensor in self._sensorNames:
