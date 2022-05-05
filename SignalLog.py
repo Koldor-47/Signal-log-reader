@@ -13,6 +13,7 @@ class SignalLog:
     _cfg_sensorNames = []
     _read_log_Data = ""
     _read_cfg_data = ""
+    _sensir_count = 0
 
 
     def __init__(self, filePath, cfgFilePath):
@@ -21,7 +22,8 @@ class SignalLog:
         self._read_log_Data = self.read_raw_data(self._file_name)
         self._read_cfg_data = self.read_raw_data(self._cfg_path_name)
         self.find_sensor_names()
-        self.find_sensor_names_cfgfile()
+        self._sensir_count = len(self._sensorNames)
+
     
 
     def read_raw_data(self, fileToRead):
@@ -37,27 +39,17 @@ class SignalLog:
                 sensor = sensor.split(" ")
                 searchDataString = "[0-9]+.[0-9]+ " + sensor[0] + " -?[0-9]+.[0-9]+"
                 rawData = re.findall(searchDataString, self._read_log_Data)
-                sensor_dict = sn.Sensor(sensor[1].strip(), sensor[0], rawData)
+                sensor_dict = sn.Sensor(sensor[1].strip(), sensor[0], rawData, self._read_cfg_data)
                 sensor_dict.sortData()
                 sensors.append(sensor_dict)
         
         self._sensorNames = sensors
 
-    def find_sensor_names_cfgfile(self):
-        self.cfg_sensors = []
-        self._read_cfg_data_noComment = ""
-        for self.line in self._read_cfg_data.split("\n"):
-            if len(self.line) > 1:
-                if self.line[0] != '#':
-                    self._read_cfg_data_noComment += self.line + "\n"
-        
-        self._cfg_sensorNames = self._read_cfg_data_noComment.split("\n")[1:-2]
-        self._read_cfg_data = self._read_cfg_data_noComment
-        print(self._cfg_sensorNames)
+    
 
     def listSensors(self):
         for sensor in self._sensorNames:
-            print(f"ID -> {sensor.id} | Name: {sensor.name}")
+            print(f"ID -> {sensor.id} | Name: {sensor.name} | {sensor._sampleType}")
 
     def make_sensor_dict(self):
         test = {}
@@ -80,7 +72,7 @@ class SignalLog:
     def Get_sensor_block_data(self):
         data = []
         block = []
-        lines_of_one_block = 13
+        lines_of_one_block = self._sensir_count
 
         for line in re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.*[0-9]*", self._read_log_Data):
             block.append(line)
@@ -120,6 +112,24 @@ class SignalLog:
             allData.append(data_blob)
         
         return allData
+    
+    def test_f(self, sensor_sample_type):
+        total_sensor_data = []
+        sensor_row_data = {}
+        good_ids = []
+        sensor_name_data = self.make_sensor_dict()
+        raw_sensor_data = re.findall("[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.*[0-9]*", self._read_log_Data)
+
+        for theSensor in self._sensorNames:
+            if theSensor._sampleType == sensor_sample_type:
+                good_ids.append(theSensor.id)
+        
+        for line in raw_sensor_data:
+            line = line.split(" ")
+            if line[1] in good_ids and sensor_name_data.
+        
+
+
                 
 
 

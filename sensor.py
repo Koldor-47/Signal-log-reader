@@ -1,11 +1,14 @@
 from datetime import datetime as dt
 
 class Sensor:
-    def __init__(self, name, id, raw_data):
+    def __init__(self, name, id, raw_data, cfg_data):
+        self.config_data = cfg_data
         self.raw_data = raw_data
         self.name = name
         self.id = id
         self._data = []
+        self._sampleType = ""
+        self.find_sensor_names_cfgfile()
         self.sortData()
     
     def sortData(self):
@@ -14,7 +17,20 @@ class Sensor:
             thetime = dt.strptime(line[0], "%H%M%S.%f")
             sensorData = {"time":thetime, "Value" : line[2]}
             self._data.append(sensorData)
+
+    def find_sensor_names_cfgfile(self):
+        self._read_cfg_data_noComment = ""
+        for self.line in self.config_data.split("\n"):
+            if len(self.line) > 1:
+                if self.line[0] != '#':
+                    self._read_cfg_data_noComment += self.line + "\n"
         
+        sensors = self._read_cfg_data_noComment.split("\n")[1:-2]
+        
+        for sensor in sensors:
+            sensor = sensor.split(" ")
+            if sensor[1].split("=")[1] == self.name:
+                self._sampleType = sensor[0]      
 
     def print_raw_data(self):
         print(self.name)

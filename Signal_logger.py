@@ -46,6 +46,8 @@ def make_Signal_Log(logfile, cfgFile):
 if __name__ == "__main__":
     test = make_Signal_Log(siglog_log_path, siglof_cfg_path)
 
+    test.listSensors()
+    print(test._sensir_count)
     #df = pd.DataFrame(test._sensorNames[12]._data)
     #df2 = pd.DataFrame(test._sensorNames[11]._data)
 
@@ -70,14 +72,14 @@ if __name__ == "__main__":
     #plt.show()
 
 
-    sensor_data_test = test.Get_sensor_block_data()
+    #sensor_data_test = test.Get_sensor_block_data()
 
     #print(sensor_data_test)
-    testData_5 = test. All_Sensor_dataFrame(sensor_data_test)
+    #testData_5 = test. All_Sensor_dataFrame(sensor_data_test)
 
     #print(test.listSensors())
 
-    df5 = pd.DataFrame(testData_5)
+    #df5 = pd.DataFrame(testData_5)
 
     #print(df5.dtypes)
     #df5.to_excel("test.xlsx")
@@ -85,4 +87,4 @@ if __name__ == "__main__":
     #plt.plot(testData_5["HNS_RIG_HEAD_LOCAL_DEG"])
     #plt.xticks(rotation=45)
     #plt.show()
-    print(df5.loc[df5["ADPE_STATUS"].notnull()])
+    #print(df5.loc[df5["ADPE_STATUS"].notnull()])
