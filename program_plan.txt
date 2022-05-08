@@ -1,0 +1,23 @@
+Reading Signal Logger File
+
+need to setup info on the item logged, ie the ID, Alias, If logging on a Time or event
+
+    * Setup a signal Object for each signal logged
+        ID, Alias, wayOfrecording, list of -> (time + value)
+        
+        Log Types
+        AnalogSignalPeriodicLogger
+        AnalogSignalPeriodicSampleLogger
+        DigitalSignalChangeLogger
+    
+    * problem -> the block of values isn't logged at he same time 1-3 milli seconds different
+        - maybe try reading as each time block first instead of each row seperate DataClass ??
+
+then need to read through the siglog file and match the right id, time and data logged.
+    * group all the time based event ones together on the same time.
+    * add in the Event based Ones as they happen.
+    * add the data to each seperate signal (Time, Value)
+
+for for output need al data points on 1 line, items logged per a time can share the same time a long as its not too far away
+    * pandas seems to like a list of dicts instead of a class with a list of values - 
+        Merage with out join could work on the peroid sig to the event based ones

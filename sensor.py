@@ -7,7 +7,7 @@ class Sensor:
         self.name = name
         self.id = id
         self._data = []
-        self._sampleType = ""
+        self.sampleType = ""
         self.find_sensor_names_cfgfile()
         self.sortData()
     
@@ -30,7 +30,7 @@ class Sensor:
         for sensor in sensors:
             sensor = sensor.split(" ")
             if sensor[1].split("=")[1] == self.name:
-                self._sampleType = sensor[0]      
+                self.sampleType = sensor[0]      
 
     def print_raw_data(self):
         print(self.name)
