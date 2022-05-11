@@ -57,17 +57,17 @@ def build_sig_log(logFile, goodChecksum):
 if __name__ == "__main__":
     sigLog_data = build_sig_log(siglog_log_path, checksum_checker(siglog_log_path, siglof_cfg_path))
 
-    t = sigLog_data.makeSensor(sigLog_data._sigcfg_sensor_data, sigLog_data._siglog_sensor_data)
-
-    for i in t:
-        if i.sample_type == "AnalogSignalPeriodicSampleLogger":
-            print(f"{i.id} -=- {i.alias}")
-    
+       
     y = sigLog_data.get_peroidic_data(sigLog_data._signals, sigLog_data._raw_log_data)
 
+    u = sigLog_data.get_digital_signals(sigLog_data._signals, sigLog_data._raw_log_data)
+
+    theTest = y + u
     
     df = pd.DataFrame(y)
+    df = df.sort_values("time")
     print(df)
+    #df.to_excel("test1.xlsx")
     #df2 = pd.DataFrame(test._sensorNames[11]._data)
 
     #print(df)

@@ -15,7 +15,7 @@ class SignalLog:
     _signals = []
 
     def __init__(self, filePath, cfgFilePath):
-        self.regexString = "[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.[0-9]+"   
+        self.regexString = "[0-9]+.[0-9]+ [0-9]+ -?[0-9]+.?[0-9]*"   
         self._file_name = filePath
         self._cfg_path_name = cfgFilePath
         self._read_log_Data = self.read_raw_data(self._file_name)
@@ -63,7 +63,43 @@ class SignalLog:
         
         return signal_list
 
+    def get_digital_signals(self, sensors, signal_data):
+        id_list = []
+        test = ["150829.081 12 401979.568",
+               "150829.081 13 6462437.324",
+               "150829.081 06 10",
+               "150829.160 01 0.000",
+               "150829.160 02 -0.608"]
+        count = 0
+        my_signal_data = []
+        for sig in sensors:
+            if sig.sample_type == "DigitalSignalChangeLogger":
+                id_list.append(sig.id)
+                my_signal_data.append(sig)
+        
+        row_list = []
+        row = {}
+        Sensor_id = my_signal_data.copy()
 
+        for line in signal_data:
+            line_s = line.split(" ")
+            for sensor in my_signal_data:
+                if sensor.id == line_s[1]:
+                    row["time"] = dt.strptime(line_s[0], "%H%M%S.%f")
+                    row[sensor.alias] = line_s[2]
+                    my_signal_data.remove(sensor)
+                    break
+
+            if len(row) <= len(id_list):
+                continue
+            elif len(row) > len(id_list):
+                row_list.append(row)
+                my_signal_data = Sensor_id.copy()  
+                row = {}    
+        
+        return row_list
+
+        
     def get_peroidic_data(self, sensors, signal_data):
         id_list = []
         count = 0
@@ -75,17 +111,16 @@ class SignalLog:
         
         row_list = []
         row = {}
-        Sensor_id = my_signal_data
+        Sensor_id = my_signal_data.copy()
 
         for line in signal_data:
             line_s = line.split(" ")
-            for sensor in my_signal_data:
-                if len(row) == 0:
-                    row["time"] = line_s[0]
-                
-                if sensor.id in id_list:
-                    row[sensor.alias] = line_s[2]
-                    Sensor_id.remove(sensor)
+            for sensor in my_signal_data: 
+                if sensor.id in id_list and line_s[1] in id_list:
+                    if len(row) == 0:
+                        row["time"] = dt.strptime(line_s[0], "%H%M%S.%f")
+                    row[sensor.alias] = float(line_s[2])
+                    my_signal_data.remove(sensor)
                     break
             
 
@@ -93,7 +128,7 @@ class SignalLog:
                 continue
             elif len(row) > len(id_list):
                 row_list.append(row)
-                Sensor_id = my_signal_data        
+                my_signal_data = Sensor_id.copy()  
                 row = {}
             
         
