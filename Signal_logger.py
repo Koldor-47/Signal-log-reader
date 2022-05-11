@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from re import search
 import sensor
-import SignalLog
+import SignalLog_new as SignalLog
 
 
 
@@ -13,9 +13,10 @@ import SignalLog
 siglog_log_path = r"Data\220502_150544.SIL"
 siglof_cfg_path = r"Data\SIGLOGCFG_reduced.TXT"
 
-# This function compares the siglog file and sigcfg file. the way the sensors are logged is setup in the cfg file
+# This function compares the siglog file and sigcfg file. 
+# the way the sensors are logged is setup in the cfg file
 # ie some sensor log on time other when a state changes.
-def make_Signal_Log(logfile, cfgFile):
+def checksum_checker(logfile, cfgFile):
     checksum_regex = r"checksum:? [A-Za-z0-9]{8}"
     data_log = ""
     data_cfg = ""
@@ -37,18 +38,36 @@ def make_Signal_Log(logfile, cfgFile):
         data_cfg = data_cfg.split(" ")[1]
     
     if data_cfg == data_log:
-        signal_logger = SignalLog.SignalLog(siglog_log_path, siglof_cfg_path)
+        return True
+    else:
+        return False
+        
 
     return signal_logger
+
+def build_sig_log(logFile, goodChecksum):
+    if goodChecksum:
+        signal_logger = SignalLog.SignalLog(siglog_log_path, siglof_cfg_path)
+        return signal_logger
+    else:
+        print("siglog and sigcfg Checksum Don't match")
 
 
 
 if __name__ == "__main__":
-    test = make_Signal_Log(siglog_log_path, siglof_cfg_path)
+    sigLog_data = build_sig_log(siglog_log_path, checksum_checker(siglog_log_path, siglof_cfg_path))
 
-    test.listSensors()
-    print(test._sensir_count)
-    #df = pd.DataFrame(test._sensorNames[12]._data)
+    t = sigLog_data.makeSensor(sigLog_data._sigcfg_sensor_data, sigLog_data._siglog_sensor_data)
+
+    for i in t:
+        if i.sample_type == "AnalogSignalPeriodicSampleLogger":
+            print(f"{i.id} -=- {i.alias}")
+    
+    y = sigLog_data.get_peroidic_data(sigLog_data._signals, sigLog_data._raw_log_data)
+
+    
+    df = pd.DataFrame(y)
+    print(df)
     #df2 = pd.DataFrame(test._sensorNames[11]._data)
 
     #print(df)

@@ -47,7 +47,7 @@ class SignalLog:
 
     def listSensors(self):
         for sensor in self._sensorNames:
-            print(f"ID -> {sensor.id} | Name: {sensor.name} | {sensor._sampleType}")
+            print(f"ID -> {sensor.id} | Name: {sensor.name} | {sensor.sampleType}")
 
 
 
