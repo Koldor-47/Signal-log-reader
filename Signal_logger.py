@@ -60,11 +60,11 @@ if __name__ == "__main__":
        
     y = sigLog_data.get_peroidic_data(sigLog_data._signals, sigLog_data._raw_log_data)
 
-    u = sigLog_data.get_digital_signals(sigLog_data._signals, sigLog_data._raw_log_data)
+    u = sigLog_data.get_digital_signals(sigLog_data._signals, sigLog_data._read_log_Data)
 
     theTest = y + u
     
-    df = pd.DataFrame(y)
+    df = pd.DataFrame(theTest)
     df = df.sort_values("time")
     print(df)
     #df.to_excel("test1.xlsx")

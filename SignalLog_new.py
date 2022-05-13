@@ -63,40 +63,32 @@ class SignalLog:
         
         return signal_list
 
-    def get_digital_signals(self, sensors, signal_data):
+    def get_digital_signals(self, sensors, signal_data_raw):
         id_list = []
-        test = ["150829.081 12 401979.568",
-               "150829.081 13 6462437.324",
-               "150829.081 06 10",
-               "150829.160 01 0.000",
-               "150829.160 02 -0.608"]
-        count = 0
         my_signal_data = []
+        row_list = []
+        
+
         for sig in sensors:
             if sig.sample_type == "DigitalSignalChangeLogger":
                 id_list.append(sig.id)
                 my_signal_data.append(sig)
-        
-        row_list = []
-        row = {}
-        Sensor_id = my_signal_data.copy()
+    
 
-        for line in signal_data:
-            line_s = line.split(" ")
-            for sensor in my_signal_data:
-                if sensor.id == line_s[1]:
-                    row["time"] = dt.strptime(line_s[0], "%H%M%S.%f")
-                    row[sensor.alias] = line_s[2]
-                    my_signal_data.remove(sensor)
-                    break
-
-            if len(row) <= len(id_list):
-                continue
-            elif len(row) > len(id_list):
+        for id in id_list:
+            row = {}
+            for sen in my_signal_data:
+                if sen.id == id:
+                    theSensor = sen
+            reg_expression = f"[0-9]+.[0-9]+ {id} -?[0-9]+.?[0-9]*" 
+            sig_id_data = re.findall(reg_expression, signal_data_raw)
+            for data in sig_id_data:
+                data_s = data.split(" ")
+                row["time"] = dt.strptime(data_s[0], "%H%M%S.%f")
+                row[theSensor.alias] = float(data_s[2])
                 row_list.append(row)
-                my_signal_data = Sensor_id.copy()  
-                row = {}    
-        
+                row = {}
+                
         return row_list
 
         
