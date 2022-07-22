@@ -1,0 +1,35 @@
+# Signal logging configuration file
+version 1.0
+
+AnalogSignalPeriodicSampleLogger alias=RIG_INC_X valueDbId=DBI_INP_V_RIG_INC_X period=66
+AnalogSignalPeriodicSampleLogger alias=RIG_INC_Y valueDbId=DBI_INP_V_RIG_INC_Y period=66
+
+AnalogSignalPeriodicSampleLogger alias=FEEDER_INC_SWING valueDbId=DBI_INP_V_FEEDER_INC_SWING period=66
+AnalogSignalPeriodicSampleLogger alias=FEEDER_INC_DUMP valueDbId=DBI_INP_V_FEEDER_INC_DUMP period=66
+
+AnalogSignalPeriodicSampleLogger alias=HNS_RIG_HEAD_LOCAL_DEG valueDbId=DBI_HNS_RIG_HEAD_LOCAL_DEG period=66
+
+# AnalogSignalPeriodicSampleLogger alias=INP_V_BOOMLIFT valueDbId=DBI_INP_V_BOOMLIFT period=66
+
+# AnalogSignalPeriodicSampleLogger alias=SHAFT_SPEED_LEFT_FILTERED_SPEED valueDbId=DBI_SHAFT_SPEED_LEFT_FILTERED_SPEED period=66
+# AnalogSignalPeriodicSampleLogger alias=TRACK_SPEED_CTRL_LEFT_REF_SPEED valueDbId=DBI_TRACK_SPEED_CTRL_LEFT_REF_SPEED period=66
+
+# AnalogSignalPeriodicSampleLogger alias=SHAFT_SPEED_RIGHT_FILTERED_SPEED valueDbId=DBI_SHAFT_SPEED_RIGHT_FILTERED_SPEED period=66
+# AnalogSignalPeriodicSampleLogger alias=TRACK_SPEED_CTRL_RIGHT_REF_SPEED valueDbId=DBI_TRACK_SPEED_CTRL_RIGHT_REF_SPEED period=66
+
+DigitalSignalChangeLogger alias=ADPE_STATUS valueDbId=DBI_ADPE_STATUS
+DigitalSignalChangeLogger alias=ADPE_CURRENT_TASK valueDbId=DBI_ADPE_CURRENT_TASK
+
+# Red dot, reference pose
+AnalogSignalPeriodicSampleLogger alias=AUTO_REF_X valueDbId=DBI_AUTO_REF_X period=66
+AnalogSignalPeriodicSampleLogger alias=AUTO_REF_Y valueDbId=DBI_AUTO_REF_Y period=66
+
+# Blue dot, carrot pose
+AnalogSignalPeriodicSampleLogger alias=AUTO_VTP_X valueDbId=DBI_AUTO_VTP_X period=66
+AnalogSignalPeriodicSampleLogger alias=AUTO_VTP_Y valueDbId=DBI_AUTO_VTP_Y period=66
+
+# Green dot, actual pose
+AnalogSignalPeriodicSampleLogger alias=HNS_RCP_LOCAL_M_X valueDbId=DBI_HNS_RCP_LOCAL_M valueDbIndex=1 period=66
+AnalogSignalPeriodicSampleLogger alias=HNS_RCP_LOCAL_M_Y valueDbId=DBI_HNS_RCP_LOCAL_M valueDbIndex=0 period=66
+
+checksum A7D15762

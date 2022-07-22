@@ -41,11 +41,11 @@ class SignalLog:
     def find_sensor_names_cfgfile(self, raw_data):
         _read_cfg_data_noComment = []
         for line in raw_data.split("\n"):
-            if len(line) > 1:
+            if line.split(" ")[0] == "DigitalSignalChangeLogger" or line.split(" ")[0] == "AnalogSignalPeriodicSampleLogger":
                 if line[0] != '#':
                    _read_cfg_data_noComment.append(line)
         
-        return _read_cfg_data_noComment[1:-1]
+        return _read_cfg_data_noComment
 
 
     def makeSensor(self, sigcfg, siglog):

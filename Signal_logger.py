@@ -10,8 +10,8 @@ import SignalLog_new as SignalLog
 
 
 
-siglog_log_path = r"Data\220502_150544.SIL"
-siglof_cfg_path = r"Data\SIGLOGCFG_reduced.TXT"
+siglog_log_path = r"Data/220718_142224.SIL"
+siglof_cfg_path = r"Data/SIGLOGCFG.TXT"
 
 # This function compares the siglog file and sigcfg file. 
 # the way the sensors are logged is setup in the cfg file
@@ -63,11 +63,14 @@ if __name__ == "__main__":
     u = sigLog_data.get_digital_signals(sigLog_data._signals, sigLog_data._read_log_Data)
 
     theTest = y + u
+
+    
     
     df = pd.DataFrame(theTest)
     df = df.sort_values("time")
+
     print(df)
-    #df.to_excel("test1.xlsx")
+    df.to_excel("test1.xlsx")
     #df2 = pd.DataFrame(test._sensorNames[11]._data)
 
     #print(df)

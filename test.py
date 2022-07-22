@@ -10,8 +10,8 @@ class signal:
 
 good_id = [1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13]
 
-path_cfg =r"Data\SIGLOGCFG_reduced.TXT"
-path_sig =r"Data\220502_150544.SIL"
+path_cfg =r"Data/SIGLOGCFG_reduced.TXT"
+path_sig =r"Data/220502_150544.SIL"
 
 with open(path_cfg, "r") as Data:
     sigcfg_raw_text = Data.readlines()
@@ -57,7 +57,6 @@ def Get_periodic_data(listOfIds, raw_data, id_names):
     return total_data
 
 signal_names = id_to_names(siglog_raw_text)
-
 t = Get_periodic_data(good_id, good_data, signal_names)
 
 
