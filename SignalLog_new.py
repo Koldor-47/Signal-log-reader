@@ -33,7 +33,7 @@ class SignalLog:
         return readFile
 
     def raw_sensor_sig_info(self, raw_data):
-        sensor_regex = r"[0-9]{2} [A-Z_]+"
+        sensor_regex = r"[0-9]{2} [A-Za-z_]*"
         sigLof_sensor = re.findall(sensor_regex, raw_data)
 
         return sigLof_sensor
