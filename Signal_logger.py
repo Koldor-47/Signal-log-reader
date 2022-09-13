@@ -10,8 +10,8 @@ import SignalLog_new as SignalLog
 
 
 
-siglog_log_path = r"C:\Users\aucnh\Desktop\foot\220731_145521.SIL"
-siglof_cfg_path = r"C:\Users\aucnh\Desktop\foot\SIGLOGCFG.TXT"
+siglog_log_path = r"C:\Users\aucnh\Desktop\FMG_Auto\Jira - Issues\No foot on ground\220801_112306.SIL"
+siglof_cfg_path = r"C:\Users\aucnh\Desktop\FMG_Auto\Jira - Issues\No foot on ground\SIGLOGCFG.TXT"
 
 # This function compares the siglog file and sigcfg file. 
 # the way the sensors are logged is setup in the cfg file
@@ -67,6 +67,7 @@ if __name__ == "__main__":
     
     df = pd.DataFrame(theTest)
     df = df.sort_values("time")
+
 
     print(df)
     df.to_excel("test1.xlsx")
