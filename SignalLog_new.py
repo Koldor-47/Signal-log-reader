@@ -1,6 +1,5 @@
 import re
 import sensor as sn
-import pandas as pd
 from datetime import datetime as dt
 
 
