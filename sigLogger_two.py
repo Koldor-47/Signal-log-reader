@@ -3,8 +3,7 @@ import datetime as dt
 from turtle import color
 import matplotlib.pyplot as plt
 import numpy as np
-from itertools import count
-from matplotlib.animation import FuncAnimation
+
 
 def read_data(dataFile):
     with open(dataFile, 'r') as data:
@@ -18,8 +17,8 @@ regex_sensor = "[0-9]{2} [A-Za-z_]*"
 
 
 if __name__ == "__main__":
-    siglog_raw_data = read_data("Data//F30_WA8_Loose_Feeder.SIL")
-    #siglog_raw_data = input("Please enter a .sil filev")
+    siglog_raw_data = read_data("Data//K32.txt")
+    #siglog_raw_data = input("Please enter a .sil file")
 
     sensors = []
     sensors_dict = {}
